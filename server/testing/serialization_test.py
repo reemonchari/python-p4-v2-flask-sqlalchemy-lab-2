@@ -9,9 +9,10 @@ class TestSerialization:
         '''customer is serializable'''
         with app.app_context():
             c = Customer(name='Phil')
+            i = Item(name='Dumbbells')
             db.session.add(c)
             db.session.commit()
-            r = Review(comment='great!', customer=c)
+            r = Review(comment='great!', customer=c, item=i)
             db.session.add(r)
             db.session.commit()
             customer_dict = c.to_dict()
@@ -25,9 +26,10 @@ class TestSerialization:
         '''item is serializable'''
         with app.app_context():
             i = Item(name='Insulated Mug', price=9.99)
-            db.session.add(i)
+            c = Customer(name='John Doe')
+            db.session.add_all([i, c])
             db.session.commit()
-            r = Review(comment='great!', item=i)
+            r = Review(comment='great!', item=i, customer=c)
             db.session.add(r)
             db.session.commit()
 
